@@ -16,7 +16,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from tqdm import tqdm
 
 
 def preprocess_text(text: str, remove_stopwords: bool) -> str:
@@ -70,8 +70,8 @@ for i,c in enumerate(df["Categoria"]):
 
 
 
-# inizializziamo il KMeans con 3 cluster
-kmeans = KMeans(n_clusters=6, random_state=42,n_init=10)
+# inizializziamo il KMeans con 6 cluster
+kmeans = KMeans(n_clusters=6, random_state=20,n_init=10)
 kmeans.fit(X)
 clusters = kmeans.labels_
 
