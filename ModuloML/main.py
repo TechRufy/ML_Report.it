@@ -16,7 +16,6 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-from tqdm import tqdm
 
 
 def preprocess_text(text: str, remove_stopwords: bool) -> str:
@@ -50,9 +49,6 @@ def preprocess_text(text: str, remove_stopwords: bool) -> str:
     return text
 
 
-
-
-
 df = pd.read_csv("Progetto Fondamenti Intelligenza artificiale.csv")
 del df["Informazioni cronologiche"]
 df["raw"] = df["Testo"]
@@ -63,17 +59,14 @@ vectorizer = TfidfVectorizer()
 # fit_transform applica il TF-IDF ai testi puliti - salviamo la matrice di vettori in X
 X = vectorizer.fit_transform(df['clean'])
 
-for i,c in enumerate(df["Categoria"]):
+for i, c in enumerate(df["Categoria"]):
     df["Categoria"][i] = (df["Categoria"][i])[19:]
 
-
-
-
-
 # inizializziamo il KMeans con 6 cluster
-kmeans = KMeans(n_clusters=6, random_state=20,n_init=10)
+kmeans = KMeans(n_clusters=6, random_state=20, n_init=10)
 kmeans.fit(X)
 clusters = kmeans.labels_
+
 
 def get_top_keywords(n_terms):
     """Questa funzione restituisce le keyword per ogni centroide del KMeans"""
@@ -82,8 +75,8 @@ def get_top_keywords(n_terms):
     for i, r in df.iterrows():
         print('\nCluster {}'.format(i))
         print(','.join([terms[t] for t in np.argsort(r)[
-                                          -n_terms:]]))  # per ogni riga del dataframe, trova gli n termini che hanno il punteggio più alto
-
+                                          -n_terms:]]))  # per ogni riga del dataframe, trova gli n termini che hanno
+        # il punteggio più alto
 
 
 # inizializziamo la PCA con 2 componenti
@@ -97,7 +90,6 @@ x1 = pca_vecs[:, 1]
 df['cluster'] = clusters
 df['x0'] = x0
 df['x1'] = x1
-
 
 plt.figure(figsize=(9, 9))
 # settiamo titolo
@@ -120,7 +112,4 @@ plt.show()
 
 f = open("dati.txt", "w")
 
-df.to_string(encoding="utf-8",buf="dati.txt",columns=["clean","cluster","Categoria"])
-
-
-
+df.to_string(encoding="utf-8", buf="dati.txt", columns=["clean", "cluster", "Categoria"])
