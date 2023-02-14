@@ -1,11 +1,9 @@
 import re
-import string
 import nltk
 
 from nltk.corpus import stopwords
 
 # importiamo le librerie necessarie da sklearn
-from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
@@ -49,18 +47,15 @@ def preprocess_text(text: str, remove_stopwords: bool) -> str:
     return text
 
 
-df = pd.read_csv("Progetto Fondamenti Intelligenza artificiale.csv")
-del df["Informazioni cronologiche"]
-df["raw"] = df["Testo"]
-del df["Testo"]
-df["clean"] = df["raw"].apply(lambda x: preprocess_text(x, remove_stopwords=True))
+df = pd.read_csv("dati.csv")
+print(df.columns)
 
 vectorizer = TfidfVectorizer()
 # fit_transform applica il TF-IDF ai testi puliti - salviamo la matrice di vettori in X
 X = vectorizer.fit_transform(df['clean'])
 
-for i, c in enumerate(df["Categoria"]):
-    df["Categoria"][i] = (df["Categoria"][i])[19:]
+# for i, c in enumerate(df["Categoria"]):
+#     df["Categoria"][i] = (df["Categoria"][i])[19:]
 
 # inizializziamo il KMeans con 6 cluster
 kmeans = KMeans(n_clusters=6, random_state=20, n_init=10)
@@ -77,7 +72,6 @@ def get_top_keywords(n_terms):
         print(','.join([terms[t] for t in np.argsort(r)[
                                           -n_terms:]]))  # per ogni riga del dataframe, trova gli n termini che hanno
         # il punteggio più alto
-
 
 # inizializziamo la PCA con 2 componenti
 pca = PCA(n_components=2, random_state=42)
