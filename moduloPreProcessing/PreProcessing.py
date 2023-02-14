@@ -1,6 +1,7 @@
 from random import random
 
 import sklearn.datasets as DS
+
 import pandas as pd
 import time
 import threading
@@ -48,40 +49,31 @@ def preprocess_text(text: str, remove_stopwords=True) -> str:
     return text
 
 
-def process_file(text):
-    r = pd.DataFrame(data={}, columns=["clean"])
+def process_file(text : pd.DataFrame):
+    r = pd.DataFrame(data={}, columns=["clean", "Categoria"])
     l = []
-    for rows in text["Testo"]:
-        words = preprocess_text(rows, remove_stopwords=True)
-        l.append(words)
+    for row in text.iterrows():
+        words = preprocess_text(row[1]["Testo"], remove_stopwords=True)
+        l.append((words,row[1]["Categoria"]))
 
-    r = pd.concat([r, pd.DataFrame(data=l, columns=["clean"])])
+    r = pd.concat([r, pd.DataFrame(data=l, columns=["clean", "Categoria"])])
     # risultati.put(r)
     return r
 
 
-categories = [
- 'comp.graphics',
- 'comp.os.ms-windows.misc',
- 'rec.sport.baseball',
- 'rec.sport.hockey',
- 'alt.atheism',
- 'soc.religion.christian',
-]
-
-df = pd.read_csv("Progetto Fondamenti Intelligenza artificiale.csv", encoding="ISO-8859-1")
+df = pd.read_csv("Progetto Fondamenti Intelligenza artificiale.csv", encoding="utf-8")
 del df["Informazioni cronologiche"]
 print(df)
 
 start = 0
 threads = []
 results = multiprocessing.Queue()
-n_threads = 3
-size = int((df["Testo"].size / df.columns.size) / n_threads)
+n_threads = 5
+size = int((df.size / df.columns.size) / n_threads)
 
 wordnet.ensure_loaded()
 stopwords.ensure_loaded()
-clean = pd.DataFrame(data={}, columns=["clean"])
+clean = pd.DataFrame(data={}, columns=["clean","Categoria"])
 lista = []
 
 for _ in range(n_threads):
@@ -93,18 +85,8 @@ pre = time.time()
 
 with ThreadPoolExecutor(max_workers=n_threads) as ex:
     risultato = ex.map(process_file, lista)
-    # future_to_url = {ex.submit(process_file, p, results): p for p in lista}
-    # for future in as_completed(future_to_url):
-    #     url = future_to_url[future]
-    # try:
-    #     data = future.result()
-    # except Exception as exc:
-    #     print("problemi")
-    # else:
-    #     print(data)
     for ris in risultato:
         clean = pd.concat([clean, ris])
-
 
 post = time.time()
 print("tempo {0}".format(post - pre))

@@ -16,38 +16,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def preprocess_text(text: str, remove_stopwords: bool) -> str:
-    """Funzione che pulisce il testo in input andando a
-    - rimuovere i link
-    - rimuovere i caratteri speciali
-    - rimuovere i numeri
-    - rimuovere le stopword
-    - trasformare in minuscolo
-    - rimuovere spazi bianchi eccessivi
-    Argomenti:
-        text (str): testo da pulire
-        remove_stopwords (bool): rimuovere o meno le stopword
-    Restituisce:
-        str: testo pulito
-    """
-    # rimuovi link
-    text = re.sub(r"http\S+", "", text)
-    # rimuovi numeri e caratteri speciali
-    text = re.sub("[^A-Za-z0-9àèìòùé]+", " ", text)
-    # rimuovere le stopword
-    if remove_stopwords:
-        # 1. crea token
-        tokens = nltk.word_tokenize(text)
-        # 2. controlla se è una stopword
-        tokens = [w for w in tokens if not w.lower() in stopwords.words("italian")]
-        # 3. unisci tutti i token
-        text = " ".join(tokens)
-    # restituisci il testo pulito, senza spazi eccessivi, in minuscolo
-    text = text.lower().strip()
-    return text
-
-
-df = pd.read_csv("dati.csv")
+df = pd.read_csv("dati.csv",encoding="ISO-8859-1")
 print(df.columns)
 
 vectorizer = TfidfVectorizer()
@@ -106,4 +75,4 @@ plt.show()
 
 f = open("dati.txt", "w")
 
-df.to_string(encoding="utf-8", buf="dati.txt", columns=["clean", "cluster", "Categoria"])
+df.to_string(encoding="utf-8", buf="dati.txt", columns=["clean", "cluster", "Categoria","x0","x1"])
