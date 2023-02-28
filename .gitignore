@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 /ModuloML/dati.csv
 /ModuloML/dati.txt
+/ProvaModuloML/dati.csv
