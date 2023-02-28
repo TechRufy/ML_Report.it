@@ -1,5 +1,6 @@
 from random import random
 
+import numpy
 import sklearn.datasets as DS
 import pandas as pd
 import time
@@ -120,7 +121,8 @@ print("tempo {0}".format(post - pre))
 script_dir = os.path.dirname(__file__)[:-20]
 rel_path = "ModuloML/dati.csv"
 abs_file_path = os.path.join(script_dir, rel_path)
-f = open(abs_file_path, "w")
+f = open(abs_file_path, "w",newline='')
+clean["clean"].replace('', numpy.nan, inplace=True)
 clean.dropna(inplace=True)
 clean.to_csv(path_or_buf=f, encoding="ISO-8859-1", index=False)
 quit()

@@ -28,12 +28,10 @@ df.drop(indexNames, inplace=True)
 # df.drop(indexNames, inplace=True)
 # indexNames = df[df['Category'] == 'gender'].index
 # df.drop(indexNames, inplace=True)
-df.dropna(inplace=True)
 
-vectorizer = TfidfVectorizer()
+vectorizer = TfidfVectorizer(max_df=50) #stavi a modificare i valori qui, prova
 # fit_transform applica il TF-IDF ai testi puliti - salviamo la matrice di vettori in X
 X = vectorizer.fit_transform(df['clean'].values.astype('U'))
-
 
 # inizializziamo il KMeans con 4 cluster
 kmeans = KMeans(n_clusters=3, random_state=20, n_init=10)
