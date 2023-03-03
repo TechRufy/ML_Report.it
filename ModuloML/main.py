@@ -32,16 +32,23 @@ df = pd.read_csv("dati.csv")
 
 vectorizer = TfidfVectorizer()  # stavi a modificare i valori qui, prova
 # fit_transform applica il TF-IDF ai testi puliti - salviamo la matrice di vettori in X
+
 X = vectorizer.fit_transform(df['testi puliti'].values.astype('U'))
+
+ipca = IncrementalPCA(n_components=20, batch_size=50)
+print("ciao")
+# passiamo alla pca il nostro array X
+pca_vecs = ipca.fit_transform(X)
+
 print("ciao")
 # inizializziamo il KMeans con 4 cluster
 kmeans = KMeans(n_clusters=6, random_state=20, n_init=10)
-kmeans.fit(X)
+kmeans.fit(pca_vecs)
 clusters = kmeans.labels_
 print("ciao")
-dbmeans = DBSCAN(n_jobs=-1,eps=1)
-dbmeans.fit(X)
-clustersDB = dbmeans.labels_
+#dbmeans = DBSCAN(n_jobs=-1,eps=0.5)
+#dbmeans.fit(pca_vecs)
+#clustersDB = dbmeans.labels_
 
 print("ciao")
 def get_top_keywords(n_terms):
@@ -56,17 +63,17 @@ def get_top_keywords(n_terms):
 
 
 # inizializziamo la PCA con 2 componenti
-ipca = IncrementalPCA(n_components=2, batch_size=50)
-print("ciao")
+#ipca = IncrementalPCA(n_components=2, batch_size=50)
+#print("ciao")
 # passiamo alla pca il nostro array X
-pca_vecs = ipca.fit_transform(X)
+#pca_vecs = ipca.fit_transform(X)
 
 # salviamo le nostre due dimensioni in x0 e x1
 x0 = pca_vecs[:, 0]
 x1 = pca_vecs[:, 1]
 
 df['clusterKmeans'] = clusters
-df["clusterDBmeans"] = clustersDB
+#df["clusterDBmeans"] = clustersDB
 df['x0'] = x0
 df['x1'] = x1
 
@@ -89,14 +96,14 @@ plt.ylabel("X1", fontdict={"fontsize": 16})
 sns.scatterplot(data=df, x='x0', y='x1', hue='discriminazione', palette="bright")
 plt.show()
 
-plt.figure(figsize=(9, 9), dpi=200)
+#plt.figure(figsize=(9, 9), dpi=200)
 # settiamo titolo
-plt.title("Raggruppamento TF-IDF + KMeans", fontdict={"fontsize": 18})
+#plt.title("Raggruppamento TF-IDF + KMeans", fontdict={"fontsize": 18})
 # settiamo nome assi
-plt.xlabel("X0", fontdict={"fontsize": 16})
-plt.ylabel("X1", fontdict={"fontsize": 16})
-sns.scatterplot(data=df, x='x0', y='x1', hue='clusterDBmeans', palette="bright")
-plt.show()
+#plt.xlabel("X0", fontdict={"fontsize": 16})
+#plt.ylabel("X1", fontdict={"fontsize": 16})
+#sns.scatterplot(data=df, x='x0', y='x1', hue='clusterDBmeans', palette="bright")
+#plt.show()
 
 f = open("postDati.csv", "w", newline="")
 
