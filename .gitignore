@@ -131,3 +131,4 @@ dmypy.json
 /ModuloML/dati.txt
 /ProvaModuloML/dati.csv
 /RandomForest.sav
+/CountVectorizer.sav
