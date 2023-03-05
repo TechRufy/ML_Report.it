@@ -1,3 +1,6 @@
+import os
+import pickle
+
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -9,6 +12,8 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
+
+
 
 
 def conf_matrix(y, y_pred, title, labels):
@@ -41,6 +46,12 @@ clf = CountVectorizer()
 X_train_cv = clf.fit_transform(X_train)
 X_test_cv = clf.transform(X_test)
 
+script_dir = os.path.dirname(__file__)[:-9]
+rel_path = "CountVectorizer.sav"
+abs_file_path = os.path.join(script_dir, rel_path)
+
+pickle.dump(clf, open(abs_file_path, 'wb'))
+
 print("iniziata la random forest")
 rf = RandomForestClassifier(random_state=555)
 rf.fit(X_train_cv, y_train)
@@ -50,6 +61,11 @@ print('Classification Report for Random Forest:\n',
       classification_report(y_test, nb_pred, target_names=discriminazioni))
 
 conf_matrix(y_test, nb_pred, 'Random Forest Sentiment Analysis\nConfusion Matrix', discriminazioni)
+
+script_dir = os.path.dirname(__file__)[:-9]
+rel_path = "RandomForest.sav"
+abs_file_path = os.path.join(script_dir, rel_path)
+pickle.dump(rf, open(abs_file_path, 'wb'))
 
 tf_transformer = TfidfTransformer(use_idf=True)
 tf_transformer.fit(X_train_cv)
