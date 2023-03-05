@@ -60,6 +60,7 @@ nb_pred = rf.predict(X_test_cv)
 print('Classification Report for Random Forest:\n',
       classification_report(y_test, nb_pred, target_names=discriminazioni))
 
+
 conf_matrix(y_test, nb_pred, 'Random Forest Sentiment Analysis\nConfusion Matrix', discriminazioni)
 
 script_dir = os.path.dirname(__file__)[:-9]

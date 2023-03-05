@@ -1,6 +1,6 @@
 import requests
 
-r = requests.post("https://mlreport.azurewebsites.net/", data="i hate niggas")
+r = requests.post("http://127.0.0.1:5000", data="Woman are all stupid")
 
 print(r.text)
 
