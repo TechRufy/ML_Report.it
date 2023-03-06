@@ -13,8 +13,8 @@ import seaborn as sns
 
 df = pd.read_csv("dati.csv")
 df = df[df['discriminazione'] != 'other_cyberbullying']
-df = df[df['discriminazione'] != 'religion']
-df = df[df['discriminazione'] != 'not_cyberbullying']
+# df = df[df['discriminazione'] != 'religion']
+# df = df[df['discriminazione'] != 'not_cyberbullying']
 
 vectorizer = TfidfVectorizer(min_df=.0005, max_df=.8)
 # fit_transform applica il TF-IDF ai testi puliti - salviamo la matrice di vettori in X
@@ -26,7 +26,7 @@ X_cv = clf.fit_transform(df["testi puliti"])
 
 print("ciao")
 # inizializziamo il KMeans con 4 cluster
-kmeans = KMeans(n_clusters=3, random_state=20, n_init=10)
+kmeans = KMeans(n_clusters=5, random_state=20, n_init=10)
 kmeans.fit(X_cv)
 clusters = kmeans.labels_
 

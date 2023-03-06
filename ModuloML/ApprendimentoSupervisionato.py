@@ -63,8 +63,12 @@ print('Classification Report for Random Forest:\n',
 
 conf_matrix(y_test, nb_pred, 'Random Forest Sentiment Analysis\nConfusion Matrix', discriminazioni)
 
+best_tree = rf.estimators_[5]
+print(best_tree.get_n_leaves())
+
+
 script_dir = os.path.dirname(__file__)[:-9]
-rel_path = "RandomForest.sav"
+rel_path = "RandomForest.pkl"
 abs_file_path = os.path.join(script_dir, rel_path)
 pickle.dump(rf, open(abs_file_path, 'wb'))
 

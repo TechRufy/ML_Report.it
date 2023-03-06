@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 import pickle
+import py7zr
 
 from sklearn.feature_extraction.text import CountVectorizer
 
@@ -9,7 +10,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
-    loaded_model = pickle.load(open("RandomForest.sav", 'rb'))
+
+    with py7zr.SevenZipFile('RandomForest.7z', mode='r') as z:
+        z.extractall()
+    loaded_model = pickle.load(open("RandomForest.pkl", 'rb'))
     clf = pickle.load(open("CountVectorizer.sav", 'rb'))
     testo = request.get_data()
     testo_cv = clf.transform([testo])
