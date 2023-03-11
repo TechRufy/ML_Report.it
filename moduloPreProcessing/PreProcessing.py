@@ -43,19 +43,6 @@ def preprocess_text(text: str, remove_stopwords=True) -> str:
 
     listStopWord.extend(['rt', 'mkr', 'didn', 'bc', 'n', 'm', 'im', 'll', 'y', 've', 'u', 'ur', 'don', 't', 's'])
 
-    # rimuovi link
-    # text = re.sub(r"rt\s", " ", text)
-    #
-    # text = re.sub(r"http\S+", " ", text)
-    #
-    # text = re.sub(r"#\S+", " ", text)
-    #
-    # text = re.sub(r"RT\s", " ", text)
-    #
-    # text = re.sub(r"@\S+", " ", text)
-    # # rimuovi numeri e caratteri speciali
-    # text = re.sub("[^A-Za-z]+", " ", text)
-    # # rimuovere le stopword
     if remove_stopwords:
         # 1. crea token
         tokens = nltk.word_tokenize(text)
@@ -68,56 +55,11 @@ def preprocess_text(text: str, remove_stopwords=True) -> str:
     return text
 
 
-# def process_file(text):
-#     r = pd.DataFrame(data={}, columns=["clean", "Category"])
-#     l = []
-#     for index, rows in text.iterrows():
-#         words = preprocess_text(rows["testi"], remove_stopwords=True)
-#         l.append((words, rows["cyberbullying_type"]))
-#
-#     r = pd.concat([r, pd.DataFrame(data=l, columns=["clean", "Category"])])
-#     # risultati.put(r)
-#     return r
-
-
 data = pd.read_csv("cyberbullying_tweets.csv")
 
 data = data.rename(columns={'tweet_text': 'testi', 'cyberbullying_type': 'discriminazione'})
 
-data["valore_discriminazione"] = data['discriminazione'].replace(
-    {"religion": 1, "age": 2, "ethnicity": 3, "gender": 4, "other_cyberbullying": 5, "not_cyberbullying": 6})
-
-# indexNames = df[df['cyberbullying_type'] == 'not_cyberbullying'].index
-# # Delete these row indexes from dataFrame
-# df.drop(indexNames, inplace=True)
-
-# indexNames = df[df['cyberbullying_type'] == 'other_cyberbullying'].index
-# # Delete these row indexes from dataFrame
-# df.drop(indexNames, inplace=True)
-
-
-# start = 0
-# threads = []
-# results = multiprocessing.Queue()
-# n_threads = 1
-# size = int((df.size / df.columns.size) / n_threads)
-#
-# wordnet.ensure_loaded()
-# stopwords.ensure_loaded()
-# clean = pd.DataFrame(data={}, columns=["clean", "Category"])
-# lista = []
-#
-# for _ in range(n_threads):
-#     p = df.iloc[start:(start + size)]
-#     start = start + size
-#     lista.append(p)
-#
 pre = time.time()
-#
-# with ThreadPoolExecutor(max_workers=n_threads) as ex:
-#     risultato = ex.map(process_file, lista)
-#     for ris in risultato:
-#         clean = pd.concat([clean, ris])
 
 
 data['testi puliti'] = data['testi'].apply(preprocess_text)
