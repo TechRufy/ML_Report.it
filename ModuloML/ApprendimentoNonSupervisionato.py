@@ -87,7 +87,7 @@ plt.ylabel("X1", fontdict={"fontsize": 16})
 sns.scatterplot(data=df, x='x0', y='x1', hue='clusterKmeansVC', palette="bright")
 plt.show()
 
-f = open("postDati.csv", "w", newline="")
+#f = open("postDati.csv", "w", newline="")
 
-df.to_csv(encoding="ISO-8859-1", path_or_buf=f, index=False)
-quit()
+#df.to_csv(encoding="ISO-8859-1", path_or_buf=f, index=False)
+
