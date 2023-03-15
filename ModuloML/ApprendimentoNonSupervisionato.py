@@ -1,33 +1,26 @@
 # importiamo le librerie necessarie da sklearn
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.cluster import KMeans
-from sklearn.cluster import DBSCAN
-from sklearn.decomposition import IncrementalPCA
-
+import matplotlib.pyplot as plt
 # importiamo le altre librerie necessarie
 import pandas as pd
-import numpy as np
-
-import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.decomposition import IncrementalPCA
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+
+
+def plotFunction(titolo, dati, hue):
+    plt.figure(figsize=(9, 9), dpi=200)
+    # settiamo titolo
+    plt.title(titolo, fontdict={"fontsize": 18})
+    # settiamo nome assi
+    plt.xlabel("X0", fontdict={"fontsize": 16})
+    plt.ylabel("X1", fontdict={"fontsize": 16})
+    # creiamo diagramma a dispersione con seaborn, dove hue è la classe usata per raggruppare i dati
+    sns.scatterplot(data=dati, x='x0', y='x1', hue=hue, palette="bright")
+    plt.show()
+
 
 df = pd.read_csv("dati.csv")
-
-# x_pos = np.arange(len(df["discriminazione"].unique()))
-
-# plt.figure(figsize=(9, 5))
-# plt.bar(x_pos, df["discriminazione"].value_counts(), align='center')
-# plt.xticks(x_pos, df["discriminazione"].unique())
-# plt.ylabel('Numero di tweet')
-# plt.xlabel('Categoria')
-# plt.title('tweet per categoria')
-# plt.show()
-# print(df["discriminazione"].value_counts())
-
-
-# df = df[df['discriminazione'] != 'other_cyberbullying']
-# df = df[df['discriminazione'] != 'religion']
-# df = df[df['discriminazione'] != 'not_cyberbullying']
 
 vectorizer = TfidfVectorizer(min_df=.0005, max_df=.8)
 # fit_transform applica il TF-IDF ai testi puliti - salviamo la matrice di vettori in X
@@ -59,35 +52,10 @@ df['clusterKmeansVC'] = clustersVC
 df['x0'] = x0
 df['x1'] = x1
 
-plt.figure(figsize=(9, 9), dpi=200)
-# settiamo titolo
-plt.title("Raggruppamento TF-IDF + KMeans", fontdict={"fontsize": 18})
-# settiamo nome assi
-plt.xlabel("X0", fontdict={"fontsize": 16})
-plt.ylabel("X1", fontdict={"fontsize": 16})
-# creiamo diagramma a dispersione con seaborn, dove hue è la classe usata per raggruppare i dati
-sns.scatterplot(data=df, x='x0', y='x1', hue='clusterKmeansTF', palette="bright")
-plt.show()
+plotFunction("Raggruppamento TF-IDF + KMeans",df,'clusterKmeansTF')
+plotFunction("Raggruppamento TF-IDF + KMeans",df,'discriminazione')
+plotFunction("Raggruppamento countVectorizer + KMeans",df,'clusterKmeansVC')
 
-plt.figure(figsize=(9, 9), dpi=200)
-# settiamo titolo
-plt.title("Raggruppamento TF-IDF + KMeans", fontdict={"fontsize": 18})
-# settiamo nome assi
-plt.xlabel("X0", fontdict={"fontsize": 16})
-plt.ylabel("X1", fontdict={"fontsize": 16})
-sns.scatterplot(data=df, x='x0', y='x1', hue='discriminazione', palette="bright")
-plt.show()
+# f = open("postDati.csv", "w", newline="")
 
-plt.figure(figsize=(9, 9), dpi=200)
-# settiamo titolo
-plt.title("Raggruppamento countVectorizer + KMeans", fontdict={"fontsize": 18})
-# settiamo nome assi
-plt.xlabel("X0", fontdict={"fontsize": 16})
-plt.ylabel("X1", fontdict={"fontsize": 16})
-sns.scatterplot(data=df, x='x0', y='x1', hue='clusterKmeansVC', palette="bright")
-plt.show()
-
-#f = open("postDati.csv", "w", newline="")
-
-#df.to_csv(encoding="ISO-8859-1", path_or_buf=f, index=False)
-
+# df.to_csv(encoding="ISO-8859-1", path_or_buf=f, index=False)
