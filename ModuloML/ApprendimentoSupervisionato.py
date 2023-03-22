@@ -103,6 +103,11 @@ rel_path = "CountVectorizer.sav"
 abs_file_path = os.path.join(script_dir, rel_path)
 pickle.dump(clf, open(abs_file_path, 'wb'))
 
+script_dir = os.path.dirname(__file__)[:-9]
+rel_path = "TF-IDF.pkl"
+abs_file_path = os.path.join(script_dir, rel_path)
+pickle.dump(vectorizer, open(abs_file_path, 'wb'))
+
 # esportazione del modello addestrato
 script_dir = os.path.dirname(__file__)[:-9]
 rel_path = "RandomForest.pkl"

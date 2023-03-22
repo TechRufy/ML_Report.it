@@ -44,6 +44,7 @@ def preprocess_text(text: str, remove_stopwords=True) -> str:
 # leggiamo il dataSet dal file
 data = pd.read_csv("cyberbullying_tweets.csv")
 
+
 # rinominiamo le colonne per una maggiore chiarezza
 data = data.rename(columns={'tweet_text': 'testi', 'cyberbullying_type': 'discriminazione'})
 
